@@ -40,16 +40,16 @@ need it to find this kind of cython-specific memory leak.)
 
 4. Inspect the saved log file. The end of the file provides a summary:
 
-```bash
-==10207== LEAK SUMMARY:
-==10207==    definitely lost: 3,936 bytes in 16 blocks
-==10207==    indirectly lost: 0 bytes in 0 blocks
-==10207==      possibly lost: 149,361 bytes in 94 blocks
-==10207==    still reachable: 2,667,208 bytes in 1,535 blocks
-==10207==         suppressed: 32 bytes in 1 blocks
-```
+    ```bash
+    ==10207== LEAK SUMMARY:
+    ==10207==    definitely lost: 3,936 bytes in 16 blocks
+    ==10207==    indirectly lost: 0 bytes in 0 blocks
+    ==10207==      possibly lost: 149,361 bytes in 94 blocks
+    ==10207==    still reachable: 2,667,208 bytes in 1,535 blocks
+    ==10207==         suppressed: 32 bytes in 1 blocks
+    ```
 
-The `definitely lost` bytes indicate memory leaks. If a memory leak is small
+    The `definitely lost` bytes indicate memory leaks. If a memory leak is small
 and happens once on initialization, it may not be a major problem. If you add a
 loop to the minimal python script and notice that that amount of memory lost is
 increasing as you increase the number of iterations, then you clearly have a
