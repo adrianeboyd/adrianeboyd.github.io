@@ -12,8 +12,8 @@ through the process for a bug in [spaCy](https://github.com/spaCy) reported in
 [issue #3618](https://github.com/explosion/spaCy/issues/3618) and fixed in
 [PR #4486](https://github.com/explosion/spaCy/pull/4486).
 
-First, create a minimal script `minimal.py` that runs the code where you
-suspect a memory leak:
+1. Create a minimal script `minimal.py` that runs the code where you suspect a
+   memory leak:
 
 ```python
 import spacy
@@ -21,7 +21,12 @@ nlp = spacy.load('en')
 doc = nlp("This is a sentence.")
 ```
 
-Run valgrind with `--leak-check=full` to get detailed logs about where the
+2. 2. Download the valgrind suppressions file from CPython and uncomment the
+lines related to `PyObject_Free` and `PyObject_Realloc` as instructed in the
+header:
+[valgrind-python.supp](https://github.com/python/cpython/blob/master/Misc/valgrind-python.supp)
+
+3. Run valgrind with `--leak-check=full` to get detailed logs about where the
 memory related to the leaks is allocated:
 
 ```bash
@@ -30,14 +35,9 @@ valgrind --tool=memcheck --leak-check=full \
 python minimal.py
 ```
 
-The suppressions file is taken from CPython. Uncomment the lines related to
-`PyObject_Free` and `PyObject_Realloc` as instructed in the header.
-
-[https://github.com/python/cpython/blob/master/Misc/valgrind-python.supp](https://github.com/python/cpython/blob/master/Misc/valgrind-python.supp)
-
-Setting `PYTHONMALLOC=malloc` (for python3.6+) lets valgrind provide a more
-detailed analysis of python’s memory allocation, but I didn’t need it to find
-this kind of cython-specific memory leak.
+(Side note: setting `PYTHONMALLOC=malloc` (for python3.6+) lets valgrind
+provide a more detailed analysis of python’s memory allocation, but I didn’t
+need it to find this kind of cython-specific memory leak.)
 
 Inspect the saved log file. The end of the file provides a summary:
 
