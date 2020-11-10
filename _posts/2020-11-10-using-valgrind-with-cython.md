@@ -85,7 +85,7 @@ line 6096 of `_parser_model.cpp`:
 __pyx_v_A->unmaxed = ((float *)calloc(((__pyx_v_n.states * __pyx_v_n.hiddens) * __pyx_v_n.pieces), (sizeof((__pyx_v_A->unmaxed[0])))));
 ```
 
-    Line 72 of `_parser_model.pyx` is where the memory was allocated in cython:
+Line 72 of `_parser_model.pyx` is where the memory was allocated in cython:
 
     ```python
 if A._max_size == 0:
@@ -100,7 +100,7 @@ if A._max_size == 0:
 7. Searching the code shows that there’s no `free()` associated with these
    `calloc()` calls, identifying the cause of the memory leak.
 
-    In this case, restructuring the code with utility functions that allocate
+   In this case, restructuring the code with utility functions that allocate
 and free the memory when these structs are used in `nn_parser.pyx` fixes the
 problem:
 [https://github.com/explosion/spaCy/commit/3dfc76457709818fd3675b727d34e056aa6d434c](https://github.com/explosion/spaCy/commit/3dfc76457709818fd3675b727d34e056aa6d434c)
