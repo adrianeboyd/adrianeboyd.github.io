@@ -25,7 +25,9 @@ Run valgrind with `--leak-check=full` to get detailed logs about where the
 memory related to the leaks is allocated:
 
 ```bash
-valgrind --tool=memcheck --leak-check=full --suppressions=valgrind-python.supp --log-file=minimal.valgrind.log python minimal.py
+valgrind --tool=memcheck --leak-check=full \
+--suppressions=valgrind-python.supp --log-file=minimal.valgrind.log \
+python minimal.py
 ```
 
 The suppressions file is taken from CPython. Uncomment the lines related to
