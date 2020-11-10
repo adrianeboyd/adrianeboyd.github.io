@@ -39,7 +39,7 @@ this kind of cython-specific memory leak.
 
 Inspect the saved log file. The end of the file provides a summary:
 
-```none
+```bash
 ==10207== LEAK SUMMARY:
 ==10207==    definitely lost: 3,936 bytes in 16 blocks
 ==10207==    indirectly lost: 0 bytes in 0 blocks
@@ -57,7 +57,7 @@ problematic memory leak.
 If the minimal `doc = nlp("This is a sentence.")` is executed 10 times, the
 summary looks like this:
 
-```none
+```bash
 ==29544== LEAK SUMMARY:
 ==29544==    definitely lost: 31,000 bytes in 105 blocks
 ==29544==    indirectly lost: 0 bytes in 0 blocks
@@ -69,7 +69,7 @@ summary looks like this:
 Search for `definitely lost` in the log file to find more information about
 where the allocations for the memory leaks occurred, e.g.:
 
-```none
+```bash
 ==10207== 1,024 bytes in 2 blocks are definitely lost in loss record 667 of 878
 ==10207==    at 0x4837B65: calloc (vg_replace_malloc.c:752)
 ==10207==    by 0x20641C1A: __pyx_f_5spacy_6syntax_13_parser_model_resize_activations(__pyx_t_5spacy_6syntax_13_parser_model_ActivationsC*, __pyx_t_5spacy_6syntax_13_parser_model_SizesC) (_parser_model.cpp:6096)
@@ -80,7 +80,7 @@ _state_StateC**, __pyx_t_5spacy_6syntax_13_parser_model_WeightsC const*, __pyx_t
 The third line indicates that the leaking memory was allocated on line 6096 of `_parser_model.cpp`:
 
 
-```none
+```bash
 /* "spacy/syntax/_parser_model.pyx":72
 *         A.token_ids = <int*>calloc(n.states * n.feats, sizeof(A.token_ids[0]))
 *         A.scores = <float*>calloc(n.states * n.classes, sizeof(A.scores[0]))
@@ -110,4 +110,4 @@ In this case, restructuring the code with utility functions that allocate
 and free the memory when these structs are used in `nn_parser.pyx` fixes
 the problem:
 
-https://github.com/explosion/spaCy/commit/3dfc76457709818fd3675b727d34e056aa6d434c
+[https://github.com/explosion/spaCy/commit/3dfc76457709818fd3675b727d34e056aa6d434c](https://github.com/explosion/spaCy/commit/3dfc76457709818fd3675b727d34e056aa6d434c)
