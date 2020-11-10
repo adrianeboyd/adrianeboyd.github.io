@@ -9,8 +9,8 @@ categories: cython
 
 How to use valgrind to track down memory leaks in cython. This example walks
 through the process for a bug in [spaCy](https://github.com/spaCy) reported in
-this [bug report](https://github.com/explosion/spaCy/issues/3618) and fixed in
-this [pull request](https://github.com/explosion/spaCy/pull/4486).
+[issue #3618](https://github.com/explosion/spaCy/issues/3618) and fixed in
+[PR #4486](https://github.com/explosion/spaCy/pull/4486).
 
 First, create a minimal script `minimal.py` that runs the code where you
 suspect a memory leak:
