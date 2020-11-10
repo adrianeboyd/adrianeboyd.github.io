@@ -14,11 +14,13 @@ through the process for a bug in [spaCy](https://github.com/spaCy) reported in
 
 1. Create a minimal script `minimal.py` that runs the code where you suspect a
    memory leak:
-```python
-import spacy
-nlp = spacy.load('en')
-doc = nlp("This is a sentence.")
-```
+
+   ```python
+   import spacy
+   nlp = spacy.load('en')
+   doc = nlp("This is a sentence.")
+   ```
+
 2. Download the valgrind suppressions file from CPython and uncomment the
 lines related to `PyObject_Free` and `PyObject_Realloc` as instructed in the
 header: [valgrind-python.supp](https://github.com/python/cpython/blob/master/Misc/valgrind-python.supp)
