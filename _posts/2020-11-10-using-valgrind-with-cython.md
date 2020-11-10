@@ -84,8 +84,10 @@ line 6096 of `_parser_model.cpp`:
 */
 __pyx_v_A->unmaxed = ((float *)calloc(((__pyx_v_n.states * __pyx_v_n.hiddens) * __pyx_v_n.pieces), (sizeof((__pyx_v_A->unmaxed[0])))));
 ```
-Line 72 of `_parser_model.pyx` is where the memory was allocated in cython:
-```python
+
+    Line 72 of `_parser_model.pyx` is where the memory was allocated in cython:
+
+    ```python
 if A._max_size == 0:
     A.token_ids = <int*>calloc(n.states * n.feats, sizeof(A.token_ids[0]))
     A.scores = <float*>calloc(n.states * n.classes, sizeof(A.scores[0]))
@@ -93,7 +95,8 @@ if A._max_size == 0:
     A.hiddens = <float*>calloc(n.states * n.hiddens, sizeof(A.hiddens[0]))
     A.is_valid = <int*>calloc(n.states * n.classes, sizeof(A.is_valid[0]))
     A._max_size = n.states
-```
+    ```
+
 7. Searching the code shows that there’s no `free()` associated with these
    `calloc()` calls, identifying the cause of the memory leak.
 
