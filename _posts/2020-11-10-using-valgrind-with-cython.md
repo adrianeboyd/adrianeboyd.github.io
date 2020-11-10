@@ -56,8 +56,17 @@ loop to the minimal python script and notice that that amount of memory lost is
 increasing as you increase the number of iterations, then you clearly have a
 problematic memory leak.
 
-If the minimal `doc = nlp("This is a sentence.")` is executed 10 times, the
-summary looks like this:
+Modify `minimal.py` so that the minimal example is executed 10 times:
+
+```python
+import spacy
+nlp = spacy.load('en')
+for i in range(10):
+    doc = nlp("This is a sentence.")
+```
+
+When `doc = nlp("This is a sentence.")` is executed 10 times, the summary looks
+like this:
 
 ```bash
 ==29544== LEAK SUMMARY:
@@ -75,8 +84,7 @@ where the allocations for the memory leaks occurred, e.g.:
 ==10207== 1,024 bytes in 2 blocks are definitely lost in loss record 667 of 878
 ==10207==    at 0x4837B65: calloc (vg_replace_malloc.c:752)
 ==10207==    by 0x20641C1A: __pyx_f_5spacy_6syntax_13_parser_model_resize_activations(__pyx_t_5spacy_6syntax_13_parser_model_ActivationsC*, __pyx_t_5spacy_6syntax_13_parser_model_SizesC) (_parser_model.cpp:6096)
-==10207==    by 0x206450F7: __pyx_f_5spacy_6syntax_13_parser_model_predict_states(__pyx_t_5spacy_6syntax_13_parser_model_ActivationsC*, __pyx_t_5spacy_6syntax_6
-_state_StateC**, __pyx_t_5spacy_6syntax_13_parser_model_WeightsC const*, __pyx_t_5spacy_6syntax_13_parser_model_SizesC) (_parser_model.cpp:6254)
+==10207==    by 0x206450F7: __pyx_f_5spacy_6syntax_13_parser_model_predict_states(__pyx_t_5spacy_6syntax_13_parser_model_ActivationsC*, __pyx_t_5spacy_6syntax_6_state_StateC**, __pyx_t_5spacy_6syntax_13_parser_model_WeightsC const*, __pyx_t_5spacy_6syntax_13_parser_model_SizesC) (_parser_model.cpp:6254)
 ```
 
 The third line indicates that the leaking memory was allocated on line 6096 of `_parser_model.cpp`:
@@ -97,12 +105,12 @@ Line 72 of `_parser_model.pyx` is where the memory was allocated in cython:
 
 ```python
 if A._max_size == 0:
-A.token_ids = <int*>calloc(n.states * n.feats, sizeof(A.token_ids[0]))
-A.scores = <float*>calloc(n.states * n.classes, sizeof(A.scores[0]))
-A.unmaxed = <float*>calloc(n.states * n.hiddens * n.pieces, sizeof(A.unmaxed[0]))
-A.hiddens = <float*>calloc(n.states * n.hiddens, sizeof(A.hiddens[0]))
-A.is_valid = <int*>calloc(n.states * n.classes, sizeof(A.is_valid[0]))
-A._max_size = n.states
+    A.token_ids = <int*>calloc(n.states * n.feats, sizeof(A.token_ids[0]))
+    A.scores = <float*>calloc(n.states * n.classes, sizeof(A.scores[0]))
+    A.unmaxed = <float*>calloc(n.states * n.hiddens * n.pieces, sizeof(A.unmaxed[0]))
+    A.hiddens = <float*>calloc(n.states * n.hiddens, sizeof(A.hiddens[0]))
+    A.is_valid = <int*>calloc(n.states * n.classes, sizeof(A.is_valid[0]))
+    A._max_size = n.states
 ```
 
 Searching the code shows that there’s no `free()` associated with these
