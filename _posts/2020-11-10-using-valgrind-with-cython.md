@@ -40,7 +40,7 @@ need it to find this kind of cython-specific memory leak.)
 
 4. Inspect the saved log file. The end of the file provides a summary:
 
-   ```less
+   ```text
    ==10207== LEAK SUMMARY:
    ==10207==   definitely lost: 3,936 bytes in 16 blocks
    ==10207==   indirectly lost: 0 bytes in 0 blocks
@@ -61,13 +61,13 @@ problematic memory leak.
    import spacy
    nlp = spacy.load('en')
    for i in range(10):
-      doc = nlp("This is a sentence.")
+       doc = nlp("This is a sentence.")
    ```
 
    When `doc = nlp("This is a sentence.")` is executed 10 times, the summary
 looks like this:
 
-   ```less
+   ```text
    ==29544== LEAK SUMMARY:
    ==29544==   definitely lost: 31,000 bytes in 105 blocks
    ==29544==   indirectly lost: 0 bytes in 0 blocks
@@ -79,7 +79,7 @@ looks like this:
 6. Search for `definitely lost` in the log file to find more information about
    where the allocations for the memory leaks occurred, e.g.:
 
-   ```less
+   ```text
    ==10207== 1,024 bytes in 2 blocks are definitely lost in loss record 667 of 878
    ==10207==   at 0x4837B65: calloc (vg_replace_malloc.c:752)
    ==10207==   by 0x20641C1A: __pyx_f_5spacy_6syntax_13_parser_model_resize_activations(__pyx_t_5spacy_6syntax_13_parser_model_ActivationsC*, __pyx_t_5spacy_6syntax_13_parser_model_SizesC) (_parser_model.cpp:6096)
@@ -89,7 +89,7 @@ looks like this:
    The third line above indicates that the leaking memory was allocated on
 line 6096 of `_parser_model.cpp`:
 
-   ```less
+   ```text
    /* "spacy/syntax/_parser_model.pyx":72
    *       A.token_ids = <int*>calloc(n.states * n.feats, sizeof(A.token_ids[0]))
    *       A.scores = <float*>calloc(n.states * n.classes, sizeof(A.scores[0]))
@@ -104,12 +104,12 @@ line 6096 of `_parser_model.cpp`:
 
    ```python
    if A._max_size == 0:
-      A.token_ids = <int*>calloc(n.states * n.feats, sizeof(A.token_ids[0]))
-      A.scores = <float*>calloc(n.states * n.classes, sizeof(A.scores[0]))
-      A.unmaxed = <float*>calloc(n.states * n.hiddens * n.pieces, sizeof(A.unmaxed[0]))
-      A.hiddens = <float*>calloc(n.states * n.hiddens, sizeof(A.hiddens[0]))
-      A.is_valid = <int*>calloc(n.states * n.classes, sizeof(A.is_valid[0]))
-      A._max_size = n.states
+       A.token_ids = <int*>calloc(n.states * n.feats, sizeof(A.token_ids[0]))
+       A.scores = <float*>calloc(n.states * n.classes, sizeof(A.scores[0]))
+       A.unmaxed = <float*>calloc(n.states * n.hiddens * n.pieces, sizeof(A.unmaxed[0]))
+       A.hiddens = <float*>calloc(n.states * n.hiddens, sizeof(A.hiddens[0]))
+       A.is_valid = <int*>calloc(n.states * n.classes, sizeof(A.is_valid[0]))
+       A._max_size = n.states
    ```
 
 7. Searching the code shows that there’s no `free()` associated with these
