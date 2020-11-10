@@ -2,7 +2,7 @@
 layout: post
 title: Using valgrind with cython
 description: Identifying memory leaks in cython with valgrind
-tags: [cython,spacy]
+tags: [cython,spacy,valgrind]
 categories: cython
 ---
 
