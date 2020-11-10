@@ -20,12 +20,10 @@ import spacy
 nlp = spacy.load('en')
 doc = nlp("This is a sentence.")
 ```
-
-2. 2. Download the valgrind suppressions file from CPython and uncomment the
+2. Download the valgrind suppressions file from CPython and uncomment the
 lines related to `PyObject_Free` and `PyObject_Realloc` as instructed in the
 header:
 [valgrind-python.supp](https://github.com/python/cpython/blob/master/Misc/valgrind-python.supp)
-
 3. Run valgrind with `--leak-check=full` to get detailed logs about where the
 memory related to the leaks is allocated:
 
@@ -38,8 +36,7 @@ python minimal.py
 (Side note: setting `PYTHONMALLOC=malloc` (for python3.6+) lets valgrind
 provide a more detailed analysis of python’s memory allocation, but I didn’t
 need it to find this kind of cython-specific memory leak.)
-
-Inspect the saved log file. The end of the file provides a summary:
+4. Inspect the saved log file. The end of the file provides a summary:
 
 ```bash
 ==10207== LEAK SUMMARY:
