@@ -96,7 +96,7 @@ installed or updated with a single `pip` command in a new virtual environment.
 1. Create a `constraints.txt` file that specifies an older version of numpy
    without the `wheel` problem for use in isolated builds:
 
-   ```none
+   ```text
    numpy==1.19.2
    ```
 
