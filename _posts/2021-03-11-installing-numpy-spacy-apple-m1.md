@@ -93,8 +93,8 @@ installed or updated with a single `pip` command in a new virtual environment.
      conda activate myvenv
      ```
 
-1. Create a `constraints.txt` file that specifies an older version of numpy
-   without the `wheel` problem for use in isolated builds:
+1. Create a file called `constraints.txt` that specifies an older version of
+   numpy without the `wheel` problem for use in isolated builds:
 
    ```text
    numpy==1.19.2
