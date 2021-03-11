@@ -102,7 +102,7 @@ installed or updated with a single `pip` command in a new virtual environment.
 
 1. In the `pip install` command, set `PIP_CONSTRAINT` to the path to
    `constraints.txt` and `OPENBLAS` to the path for openblas (or whichever
-   numpy settings you choose):
+   [numpy settings](https://numpy.org/devdocs/user/building.html) you choose):
 
    ```bash
    PIP_CONSTRAINT=constraints.txt OPENBLAS="$(brew --prefix openblas)" pip install spacy
