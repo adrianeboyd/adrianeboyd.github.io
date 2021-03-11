@@ -8,8 +8,8 @@ categories: pip
 ## Installing numpy and spaCy on an Apple M1 with Big Sur
 
 Installing numpy or packages that compile against numpy on an Apple M1 is not
-straight-forward because the most recent versions of numpy (`1.19.3`-`1.20.1`)
-require a version of wheel in `pyproject.toml` ([PEP
+straight-forward because the most recent version of numpy (1.20.1)
+requires a version of wheel in `pyproject.toml` ([PEP
 518](https://www.python.org/dev/peps/pep-0518/)) that doesn't work on Big Sur.
 Since numpy and spaCy are configured to use build isolation by default ([PEP
 517](https://www.python.org/dev/peps/pep-0517/)), a simple `pip install spacy`
