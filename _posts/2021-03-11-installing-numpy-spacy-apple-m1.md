@@ -49,15 +49,15 @@ Install Python 3.9 from:
 
 - Python 3.9.2 from source or the universal2 installer:
 
-  [https://www.python.org/downloads/release/python-392/]
+  [https://www.python.org/downloads/release/python-392/](https://www.python.org/downloads/release/python-392/)
 
 - Python 3.9.2 from conda-forge:
 
-  [https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-MacOSX-arm64.sh]
+  [https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-MacOSX-arm64.sh](https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-MacOSX-arm64.sh)
 
 - Python 3.9.2 from homebrew:
 
-  [https://formulae.brew.sh/formula/python@3.9]
+  [https://formulae.brew.sh/formula/python@3.9](https://formulae.brew.sh/formula/python@3.9)
 
 - **NOT RECOMMENDED:** The system Python 3.8.2 in `/usr/bin/python3` does not
   seem to work correctly: I could compile and install numpy 1.20.1, but numpy
