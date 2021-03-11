@@ -142,10 +142,10 @@ separately with homebrew.
 
     - pip (install OpenBLAS with homebrew as in option 1)
 
-           ```bash
-           pip install cython
-           OPENBLAS="$(brew --prefix openblas)" pip install numpy --no-build-isolation
-           ```
+       ```bash
+       pip install cython
+       OPENBLAS="$(brew --prefix openblas)" pip install numpy --no-build-isolation
+       ```
 
       With build isolation disabled, you can install the most recent version of
 numpy, currently 1.20.1.
