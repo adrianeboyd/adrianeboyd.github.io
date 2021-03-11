@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Installing numpy and spaCy on an Apple M1 with Big Sur
+title: Installing numpy and spaCy on an Apple M1
 tags: [numpy, pip, spacy]
 categories: pip
 ---
